@@ -255,3 +255,7 @@ Les volumes docker suivants sont utilisés :
 
 Le schéma permettant de résumer l'architecture est le suivant :
 [![](https://docs.google.com/drawings/d/e/2PACX-1vTcrNXZNX-AmEDPb_bkBS4DKq1kgvE83bryWgF5bo89Q_tex4TcL59edePn6_ojmYkpZKjpJei70LRg/pub?w=938&h=630)](https://docs.google.com/drawings/d/1cuwHDa3bV-00rJuUSGCHuSI194eNmM_9xdVWkw80tR0/edit?usp=sharing)
+
+# Autres procédures d'administration
+
+Voici [ici](https://abesfr.sharepoint.com/:w:/r/sites/Bouda/ApplisMetiers/ABESstp/Documentation/ABESstp_gestion_application.docx?d=w9ac63e3f84c54c2896ef1ea4323b55ee&csf=1&web=1&e=fAKhEY) dans la documentation interne de l'Abes.
