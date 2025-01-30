@@ -170,15 +170,16 @@ Commencer par restaurer le ``.env`` depuis les sauvegardes (à noter que pour ce
 ```bash
 cd /opt/pod/abesstp-docker/
 rsync -av \
-  sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/.env ./
+  devel@sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/.env \
+  /opt/pod/abesstp-docker/
 ```
 
 Pour restaurer les pièces jointes aux tickets AbesSTP depuis les sauvegardes (à noter que pour cette étape il faut demander au SIRE de lancer la commande `rsync`) :
 ```bash
 cd /opt/pod/abesstp-docker/
 rsync -rav \
-  sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-web/files-assistance/ \
-  ./volumes/abesstp-web/files-assistance/
+  devel@sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-web/files-assistance/ \
+  /opt/pod/abesstp-docker/volumes/abesstp-web/files-assistance/
 ```
 
 Pour restaurer la base de données depuis un dump (à noter que pour cette étape il faut demander au SIRE de lancer la commande `rsync`) :
@@ -186,7 +187,9 @@ Pour restaurer la base de données depuis un dump (à noter que pour cette étap
 cd /opt/pod/abesstp-docker/
 
 # récupération du dump depuis le serveur de sauvegardes
-rsync -ravL sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-db/dump/latest.svp.sql.gz .
+rsync -ravL \
+  devel@sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-db/dump/latest.svp.sql.gz \
+  /opt/pod/abesstp-docker/
 
 # s'assurer que le conteneur abesstp-db est lancé
 sudo docker compose up -d abesstp-db
