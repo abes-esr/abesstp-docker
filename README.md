@@ -21,29 +21,35 @@ git clone https://github.com/abes-esr/abesstp-docker/
 
 # récupération du code source d'AbesSTP (non ouvert)
 # pour qu'il puisse être embarqué dans l'image d'abesstp-web
+cd /opt/pod/abesstp-docker/
 git submodule update --init --recursive
 
 # bascule sur la branche souhaité si déploiement en test ou prod (exemple ci-dessous sur branche develop pour test)
+cd /opt/pod/abesstp-docker/
 git submodule update
 git submodule foreach --recursive git checkout develop
 
 # indiquez les mots de passes souhaités et les différents paramètres
 # en personnalisant le contenu de .env (ex: mot de passes mysql et param smtp)
+cd /opt/pod/abesstp-docker/
 cp .env-dist .env
 
 # copier le contenu de files/assistance/ depuis les dernières sauvegardes (pièces jointes des tickets AbesSTP)
+cd /opt/pod/abesstp-docker/
 rsync -rav \
   sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-web/files-assistance/ \
   ./volumes/abesstp-web/files-assistance/
 
 # import du dump de la bdd depuis les dernières sauvegardes
 # A noter : le temps de chargement prend environ 5 minutes
+cd /opt/pod/abesstp-docker/
 docker-compose up -d abesstp-db
 rsync -ravL sotora:/backup_pool/diplotaxis2-prod/daily.0/racine/opt/pod/abesstp-docker/volumes/abesstp-db/dump/latest.svp.sql.gz .
 gunzip -c latest.svp.sql.gz | docker exec -i abesstp-db bash -c 'mysql --user=root --password=$MYSQL_ROOT_PASSWORD svp'
 
 # construction des images docker spécifiques à AbesSTP
 # (facultatif car elles seront automatiquement construites au démarrage si elles ne sont pas en cache)
+cd /opt/pod/abesstp-docker/
 docker-compose build
 ```
 ### Installation d'AbesSTP en local, dev, et test
