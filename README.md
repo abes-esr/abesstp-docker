@@ -116,7 +116,7 @@ Pour mettre à jour AbesStp (une fois qu'une modification dans le code php ou da
 ```bash
 cd /opt/pod/abesstp-docker/
 git pull
-# <- à cette étape, modifiez si nécessaire les variables du .env dans le cas où vous observez qye .env-dist a été mis à jour
+# <- à cette étape, modifiez si nécessaire les variables du .env dans le cas où vous observez que .env-dist a été mis à jour
 git submodule update
 docker compose up -d --build
 ```
