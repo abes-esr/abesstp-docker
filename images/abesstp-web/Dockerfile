@@ -7,7 +7,7 @@ COPY ./sources.list /etc/apt/sources.list
 # libpng-dev : pour l'extension php GD
 RUN set -x \
     && DEBIAN_FRONTEND=noninteractive \
-    && apt-get update && apt-get install -y vim msmtp gettext-base libldap2-dev libldb-dev libpng-dev
+    && apt-get update && apt-get install -y --allow-unauthenticated vim msmtp gettext-base libldap2-dev libldb-dev libpng-dev
 COPY ./msmtprc.tls.tmpl /etc/
 COPY ./msmtprc.notls.tmpl /etc/
 
