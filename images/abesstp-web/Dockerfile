@@ -29,6 +29,13 @@ RUN find /var/www/html/ -type d -exec chmod a+rx {} \;
 # files/ contient les pièces jointes des tickets
 VOLUME /var/www/html/sites/stp.abes.fr/files/assistance/
 
+# add ca trust Harica certificates
+COPY ./HARICA_TLS_ECC_Root_CA_2021.crt /usr/share/ca-certificates/mozilla/HARICA_TLS_ECC_Root_CA_2021.crt
+COPY ./HARICA_TLS_RSA_Root_CA_2021.crt /usr/share/ca-certificates/mozilla/HARICA_TLS_RSA_Root_CA_2021.crt
+ECHO "mozilla/HARICA_TLS_ECC_Root_CA_2021.crt" >> /etc/ca-certificates.conf
+ECHO "mozilla/HARICA_TLS_RSA_Root_CA_2021.crt" >> /etc/ca-certificates.conf
+RUN update-ca-certificates
+
 COPY ./docker-entrypoint.overload.sh /
 ENTRYPOINT ["/docker-entrypoint.overload.sh"]
 CMD ["apache2-foreground"]
