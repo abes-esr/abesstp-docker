@@ -52,6 +52,8 @@ gunzip -c latest.svp.sql.gz | docker exec -i abesstp-db bash -c 'mysql --user=ro
 cd /opt/pod/abesstp-docker/
 docker-compose build
 ```
+
+
 ### Installation d'AbesSTP en local, dev, et test
 
 Pour déployer `abesstp-docker` en local, en dev ou en test il faut également lancer cette commande qui aura pour effet de générer un fichier `docker-compose.override.yml` qui mettra à disposition les outils phpmyadmin et mailhog dans des conteneurs dédiés (cf section plus bas) :
@@ -105,6 +107,18 @@ docker-compose stop
 
 # si besoin de relancer abesstp
 docker-compose restart
+```
+
+## Mise à jour d'AbesSTP
+
+Pour mettre à jour AbesStp (une fois qu'une modification dans le code php ou dans le paramétrage docker a été poussé sur le/les dépôts), voici comment procéder en suposant qu'une instance d'abesstp anterieure tourne sur le serveur ici `/opt/pod/abestp-docker/` :
+
+```bash
+cd /opt/pod/abesstp-docker/
+git pull
+# <- à cette étape, modifiez si nécessaire les variables du .env dans le cas où vous observez que .env-dist a été mis à jour
+git submodule update
+docker compose up -d --build
 ```
 
 ## Configuration de l'URL publique d'AbesSTP
