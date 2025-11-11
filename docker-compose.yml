@@ -4,7 +4,7 @@ services:
   abesstp-web:
     build: ./images/abesstp-web
     image: abesstp-web:php-5.6.40-apache
-    container_name: abesstp-web
+    container_name: abesstp1-web
     restart: unless-stopped
     mem_limit: ${MEM_LIMIT}
     memswap_limit: ${MEM_LIMIT}
@@ -21,11 +21,13 @@ services:
       SMTP_USER: ${ABESSTP_SMTP_USER}
       SMTP_PASSWORD: ${ABESSTP_SMTP_PASSWORD}
     ports:
-      - ${ABESSTP_WEB_HTTP_PORT}:80
+      - ${ABESSTP1_WEB_HTTP_PORT}:80
+      - ${ABESSTP1_WEB_HTTP_PORT_STATUS}:8080
     depends_on:
       - abesstp-db
     volumes:
       - ./volumes/abesstp-web/files-assistance/:/var/www/html/sites/stp.abes.fr/files/assistance/:rw
+      - ./volumes/apache-conf/serverstatus.conf:/etc/apache2/conf-enabled/serverstatus.conf:rw
     labels:
       # versement dans le puits de log de l'Abes
       - "co.elastic.logs/enabled=true"
@@ -36,6 +38,41 @@ services:
       - "co.elastic.logs/processors.add_fields.fields.abes_appli=abesstp"
       - "co.elastic.logs/processors.add_fields.fields.abes_middleware=Httpd"
 
+  abesstp2-web:
+    build: ./images/abesstp-web
+    image: abesstp-web:php-5.6.40-apache
+    container_name: abesstp2-web
+    restart: unless-stopped
+    mem_limit: ${MEM_LIMIT}
+    memswap_limit: ${MEM_LIMIT}
+    cpus: ${CPU_LIMIT}
+    environment:
+      MYSQL_DATABASE: svp
+      MYSQL_USER: svp
+      MYSQL_PASSWORD: ${ABESSTP_MYSQL_PASSWORD}
+      SMTP_TLS: ${ABESSTP_SMTP_TLS:-off}
+      SMTP_HOST: ${ABESSTP_SMTP_HOST:-127.0.0.1}
+      SMTP_PORT: ${ABESSTP_SMTP_PORT:-25}
+      SMTP_MAILDOMAIN: ${ABESSTP_SMTP_MAILDOMAIN:-abes.fr}
+      SMTP_RETURN_PATH: ${ABESSTP_SMTP_RETURN_PATH:-no-reply@abes.fr}
+      SMTP_USER: ${ABESSTP_SMTP_USER}
+      SMTP_PASSWORD: ${ABESSTP_SMTP_PASSWORD}
+    ports:
+      - ${ABESSTP2_WEB_HTTP_PORT}:80
+    depends_on:
+      - abesstp-db
+    volumes:
+      - ./volumes/abesstp-web/files-assistance/:/var/www/html/sites/stp.abes.fr/files/assistance/:rw
+      - ./volumes/apache-conf/serverstatus.conf:/etc/apache2/conf-enabled/serverstatus.conf:rw
+    labels:
+      # versement dans le puits de log de l'Abes
+      - "co.elastic.logs/enabled=true"
+      - "co.elastic.logs/module=apache2"
+      - "co.elastic.logs/fileset.stdout=access"
+      - "co.elastic.logs/fileset.stderr=error"
+      - "co.elastic.logs/processors.add_fields.target="
+      - "co.elastic.logs/processors.add_fields.fields.abes_appli=abesstp"
+      - "co.elastic.logs/processors.add_fields.fields.abes_middleware=Httpd"
 
   abesstp-web-clamav:
     image: abesesr/clamscan-docker:1.4.7
