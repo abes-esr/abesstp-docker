@@ -22,10 +22,12 @@ services:
       SMTP_PASSWORD: ${ABESSTP_SMTP_PASSWORD}
     ports:
       - ${ABESSTP_WEB_HTTP_PORT}:80
+      - ${ABESSTP_WEB_HTTP_PORT_STATUS}:8080
     depends_on:
       - abesstp-db
     volumes:
       - ./volumes/abesstp-web/files-assistance/:/var/www/html/sites/stp.abes.fr/files/assistance/:rw
+      - ./configs/abesstp-web/serverstatus.conf:/etc/apache2/conf-enabled/serverstatus.conf:rw
     labels:
       # versement dans le puits de log de l'Abes
       - "co.elastic.logs/enabled=true"
